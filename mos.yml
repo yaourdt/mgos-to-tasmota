@@ -1,0 +1,27 @@
+author: mark dornbach
+description: a minimal firmware for ota flashing tasmota from mongoose os
+version: 0.1.0
+
+libs_version:        ${mos.version}
+modules_version:     ${mos.version}
+mongoose_os_version: ${mos.version}
+manifest_version:    2017-09-29
+sources:             [src]
+filesystem:          [fs]
+tags:                [c, tuya, tasmota, mongoose]
+
+# Custom configuration
+config_schema:
+  #### sys ####
+  - ["debug.level", 3]                     # 0 = ERROR, 1 = WARN, 2 = INFO, 3+ = DEBUG
+  #### wifi ####
+  #- ["wifi.sta.enable",             true ] # join wifi as client
+  #- ["wifi.sta.ssid",                 "" ] # SSID
+  #- ["wifi.sta.pass",                 "" ] # password
+
+# External libs
+libs:
+  - origin: https://github.com/mongoose-os-libs/boards                  # board definitions library
+  - origin: https://github.com/mongoose-os-libs/rpc-common              # shared RPC API
+  - origin: https://github.com/mongoose-os-libs/rpc-uart                # RPC via serial console
+  - origin: https://github.com/mongoose-os-libs/rpc-service-config      # manage device configuration remotely
