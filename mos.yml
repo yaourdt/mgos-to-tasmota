@@ -1,4 +1,5 @@
 author: mark dornbach
+platform: esp8266
 description: a minimal firmware for ota flashing tasmota from mongoose os
 version: 0.1.0
 
@@ -22,6 +23,16 @@ config_schema:
 # External libs
 libs:
   - origin: https://github.com/mongoose-os-libs/boards                  # board definitions library
+  - origin: https://github.com/mongoose-os-libs/ota-common              # OTA support
   - origin: https://github.com/mongoose-os-libs/rpc-common              # shared RPC API
   - origin: https://github.com/mongoose-os-libs/rpc-uart                # RPC via serial console
   - origin: https://github.com/mongoose-os-libs/rpc-service-config      # manage device configuration remotely
+
+build_vars:
+  FLASH_SIZE: 2097152
+  FS_SIZE: 262144
+
+conds:
+  - when: build_vars.MODEL == "Shelly1"
+    apply:
+      name: switch1
