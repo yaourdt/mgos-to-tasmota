@@ -6,6 +6,15 @@
 #define CHUNK_SIZE 4096
 
 /*
+	TODO
+	* hash verify download!
+	* evaluate SpiFlashOpResult for spi_flash_read, write, erase
+	* if failed wait 60 sec and reboot
+	* disable wdt and interrupts during critical write operations
+	* remove ugly fix for closing connection
+*/
+
+/*
 	src	src address
 	dest	destination addess
 	length	block length / byte
@@ -47,7 +56,114 @@ void block_copy(uint32 src, uint32 dest, uint32 length) {
 	LOG(LL_DEBUG, ("block_copy done"));
 
 	clean:
-		if (data != NULL) { free(data); }
+	if (data != NULL) { free(data); }
+};
+
+struct state {
+	int status;                     // request status
+	uint curr_blk;			// current block to be written
+	uint32 recieved;                // number of bytes recieved
+	uint32 dest;			// target flash address
+	char data[BLOCK_SIZE];		// buffer for a block
+	time_t last_write;		// TODO this is a bad fix and should be replaced!
+};
+
+static void http_cb(struct mg_connection *c, int ev, void *ev_data, void *ud) {
+	struct http_message *hm = (struct http_message *) ev_data;
+	struct state *state     = (struct state *) ud;
+	uint next_blk, left_in_block;
+
+	switch (ev) {
+	case MG_EV_CONNECT:
+		state->status = *(int *) ev_data;
+		break;
+	case MG_EV_HTTP_CHUNK:
+		//TODO comment whats going on here
+		next_blk = ( state->dest + state->recieved + (uint32) hm->body.len ) / BLOCK_SIZE;
+		left_in_block = ( (state->curr_blk + 1) * BLOCK_SIZE ) - state->dest - state->recieved;
+
+		if ( next_blk > state->curr_blk ) {
+			memcpy(&state->data[BLOCK_SIZE - left_in_block], hm->body.p, left_in_block);
+
+			spi_flash_erase_sector(state->curr_blk);
+			spi_flash_write( state->curr_blk * BLOCK_SIZE, (uint32 *) state->data, BLOCK_SIZE);
+			state->curr_blk = next_blk;
+
+			memcpy(&state->data[0], hm->body.p + left_in_block, hm->body.len - left_in_block);
+
+			state->last_write = time(NULL);// TODO this is part of the ugly fix we use to terminate the connection
+		} else {
+			memcpy(&state->data[BLOCK_SIZE - left_in_block], hm->body.p, hm->body.len);
+		}
+		state->recieved += (uint32) hm->body.len;
+
+		/*if (n != hm->body.len) { //TODO
+			c->flags |= MG_F_CLOSE_IMMEDIATELY;
+			state->status = 500;
+		}*/
+		c->flags |= MG_F_DELETE_CHUNK;
+		break;
+	case MG_EV_HTTP_REPLY:
+		state->status = hm->resp_code;
+		c->flags |= MG_F_CLOSE_IMMEDIATELY;
+		break;
+	case MG_EV_CLOSE:
+		LOG(LL_INFO, ("HTTP status is %d, recieved %d bytes", state->status, state->recieved));
+		if (state->status == 200) {
+			spi_flash_erase_sector(state->curr_blk);
+			left_in_block = ( (state->curr_blk + 1) * BLOCK_SIZE ) - state->dest - state->recieved;
+			spi_flash_write( state->curr_blk * BLOCK_SIZE, (uint32 *) state->data, BLOCK_SIZE - left_in_block);
+			LOG(LL_INFO, ("Last block dump done, moving %d bytes to address 0x0", state->recieved));
+
+			block_copy( (*get_rboot_config()).roms[0], 0, state->recieved );
+			mgos_system_restart_after(200);
+		}
+		free(state);
+		break;
+	case MG_EV_POLL:	// TODO this is part of the ugly fix we use to terminate the connection
+		if ( ( time(NULL) - state->last_write ) > 30) {
+			state->status = 200;
+			c->flags |= MG_F_CLOSE_IMMEDIATELY;
+		}
+		break;
+	}
+};
+
+/*
+	url	src url
+	dest	destination addess
+*/
+void download_file_to_flash(char *url, uint32 dest) {
+	struct state *state;
+	if ((state = calloc(1, sizeof(*state))) == NULL) {
+		LOG(LL_ERROR, ("out of memory"));
+		return;
+	}
+	state->dest     = dest;
+	state->recieved = 0;
+	state->curr_blk = dest / BLOCK_SIZE;
+
+	LOG(LL_DEBUG, ("fetching %s to 0x%x", url, dest));
+	if (!mg_connect_http(mgos_get_mgr(), http_cb, state, url, NULL, NULL)) {
+		free(state);
+		LOG(LL_ERROR, ("malformed URL"));
+		return;
+	}
+
+	// TODO wait on download to finish, then continue here. also, return status
+	return;
+};
+
+// if we are online, lets download and flash tasmota
+static void online_cb(int ev, void *evd, void *arg) {
+	if ( ev == MGOS_NET_EV_IP_ACQUIRED ) {
+		LOG(LL_INFO, ("device is online, downloading tasmota"));
+
+		char url[100] = "https://raw.githubusercontent.com/ct-Open-Source/tuya-convert/master/files/tasmota.bin"; // TODO
+		download_file_to_flash( url, (*get_rboot_config()).roms[0] );						  // TODO
+	}
+	(void) evd;
+	(void) arg;
 }
 
 enum mgos_app_init_result mgos_app_init(void) {
@@ -56,17 +172,6 @@ enum mgos_app_init_result mgos_app_init(void) {
 	rboot_cfg = get_rboot_config();
 
 	// if we are running from app0, move flash content to app1 (and fs0 -> fs1) and reboot
-	LOG(LL_INFO, ("******** current_rom     %d", (*rboot_cfg).current_rom ));
-	LOG(LL_INFO, ("******** previous_rom    %d", (*rboot_cfg).previous_rom ));
-	LOG(LL_INFO, ("******** fw_updated      %d", (*rboot_cfg).fw_updated ));
-	LOG(LL_INFO, ("******** is_first_boot   %d", (*rboot_cfg).is_first_boot ));
-	LOG(LL_INFO, ("******** roms[0]         %d", (*rboot_cfg).roms[0] ));
-	LOG(LL_INFO, ("******** roms[1]         %d", (*rboot_cfg).roms[1] ));
-	LOG(LL_INFO, ("******** roms_sizes[0]   %d", (*rboot_cfg).roms_sizes[0] ));
-	//LOG(LL_INFO, ("******** fs_addresses[0] %d", (*rboot_cfg).fs_addresses[0] ));
-	//LOG(LL_INFO, ("******** fs_addresses[1] %d", (*rboot_cfg).fs_addresses[1] ));
-	//LOG(LL_INFO, ("******** fs_sizes[0]     %d", (*rboot_cfg).fs_sizes[0] ));
-
 	if ( (*rboot_cfg).current_rom == 0 ) {
 		LOG(LL_INFO, ("FW booted from app0, copy to app1 and reboot"));
 		block_copy( (*rboot_cfg).roms[0],         (*rboot_cfg).roms[1],         (*rboot_cfg).roms_sizes[0] );
@@ -78,12 +183,12 @@ enum mgos_app_init_result mgos_app_init(void) {
 		(*rboot_cfg).fw_updated    = 1;
 		(*rboot_cfg).is_first_boot = 1;
 
-		bool success = rboot_set_config(rboot_cfg);
-		LOG(LL_INFO, ("*******x success       %d", success ));
+		rboot_set_config(rboot_cfg);
 
-		mgos_system_restart_after(20000);
-	} else if ( (*rboot_cfg).current_rom == 1 ) {
-		LOG(LL_INFO, ("FW booted from app1"));
+		mgos_system_restart_after(200);
+	} else {
+		LOG(LL_INFO, ("FW booted from app1, waiting for network connection"));
+		mgos_event_add_group_handler(MGOS_EVENT_GRP_NET, online_cb, NULL);
 	}
 	return MGOS_APP_INIT_SUCCESS;
 }

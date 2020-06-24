@@ -16,7 +16,8 @@ config_schema:
   #### sys ####
   - ["debug.level", 3]                     # 0 = ERROR, 1 = WARN, 2 = INFO, 3+ = DEBUG
   #### wifi ####
-  #- ["wifi.sta.enable",             true ] # join wifi as client
+  - ["wifi.ap.enable",             false ]
+  - ["wifi.sta.enable",             true ] # join wifi as client
   #- ["wifi.sta.ssid",                 "" ] # SSID
   #- ["wifi.sta.pass",                 "" ] # password
 
@@ -27,6 +28,7 @@ libs:
   - origin: https://github.com/mongoose-os-libs/rpc-common              # shared RPC API
   - origin: https://github.com/mongoose-os-libs/rpc-uart                # RPC via serial console
   - origin: https://github.com/mongoose-os-libs/rpc-service-config      # manage device configuration remotely
+  - origin: https://github.com/mongoose-os-libs/ca-bundle               # CA certificates
 
 build_vars:
   FLASH_SIZE: 2097152
