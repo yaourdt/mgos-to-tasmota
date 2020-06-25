@@ -18,8 +18,9 @@ config_schema:
   #### wifi ####
   - ["wifi.ap.enable",             false ]
   - ["wifi.sta.enable",             true ] # join wifi as client
-  #- ["wifi.sta.ssid",                 "" ] # SSID
-  #- ["wifi.sta.pass",                 "" ] # password
+  - ["sta_connect_timeout",           30 ] # timeout for wifi connection / seconds
+  - ["wifi.sta1.ssid",    "mgos-recover" ] # fallback SSID
+  - ["wifi.sta1.pass",      "RJoPuKC3u5" ] # fallback password
 
 # External libs
 libs:
