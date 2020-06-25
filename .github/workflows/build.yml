@@ -1,0 +1,43 @@
+name: Mongoose Shelly build
+on:
+  push:
+    branches: [ master ]
+jobs:
+  build:
+    name: Build and release
+    strategy:
+      matrix:
+        hwModel:    [MODEL=Shelly1]
+        hwPlatform: [esp8266]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      id: checkout_code
+    - name: Build firmware
+      uses: yaourdt/mongoose-os-action@v1.0.0
+      with:
+        mos-yml-path: .
+        platform: ${{ matrix.hwPlatform }}
+        build-var: ${{ matrix.hwModel }}
+      id: mos_build
+    - name: Create Release
+      uses: actions/create-release@v1
+      id: create_release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.sha }}
+        release_name: Release ${{ github.run_id }} - ${{ matrix.hwModel }}
+        draft: false
+        prerelease: false
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      id: upload-release-asset
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./build/fw.zip
+        asset_name: fw.zip
+        asset_content_type: application/zip
