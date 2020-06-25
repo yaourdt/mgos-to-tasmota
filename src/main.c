@@ -13,7 +13,6 @@ rboot_config *rboot_cfg;
 /*
 	TODO
 	* hash verify download!
-	* evaluate SpiFlashOpResult for spi_flash_read, write, erase
 	* if failed wait 60 sec and reboot
 	* disable wdt and interrupts during critical write operations
 */
@@ -50,11 +49,20 @@ void block_copy(uint32 src, uint32 dest, uint32 length) {
 		}
 		// erase new sector
 		if ( offset % BLOCK_SIZE == 0 ) {
-			spi_flash_erase_sector( (dest + offset) / BLOCK_SIZE );
+			if ( spi_flash_erase_sector( (dest + offset) / BLOCK_SIZE ) != 0 ) {
+				LOG(LL_ERROR, ("flash delete error! abort."));
+				goto clean;
+			}
 		}
 
-		spi_flash_read ( src  + offset, (uint32 *) data, chunk);
-		spi_flash_write( dest + offset, (uint32 *) data, chunk);
+		if ( spi_flash_read ( src  + offset, (uint32 *) data, chunk) != 0 ) {
+			LOG(LL_ERROR, ("flash read error! abort."));
+			goto clean;
+		}
+		if ( spi_flash_write( dest + offset, (uint32 *) data, chunk) != 0 ) {
+			LOG(LL_ERROR, ("flash write error! abort."));
+			goto clean;
+		}
 		offset = offset + chunk;
 	}
 	LOG(LL_DEBUG, ("block_copy done"));
@@ -91,8 +99,18 @@ static void http_cb(struct mg_connection *c, int ev, void *ev_data, void *ud) {
 		if ( state->next_blk > state->curr_blk ) {
 			memcpy(&state->data[BLOCK_SIZE - state->left_in_block], hm->body.p, state->left_in_block);
 
-			spi_flash_erase_sector(state->curr_blk);
-			spi_flash_write( state->curr_blk * BLOCK_SIZE, (uint32 *) state->data, BLOCK_SIZE);
+			if ( spi_flash_erase_sector(state->curr_blk) != 0 ) {
+				LOG(LL_ERROR, ("flash delete error! abort at %d recieved bytes.", state->recieved));
+				c->flags |= MG_F_CLOSE_IMMEDIATELY;
+				state->status = 500;
+				break;
+			}
+			if ( spi_flash_write( state->curr_blk * BLOCK_SIZE, (uint32 *) state->data, BLOCK_SIZE) != 0 ) {
+				LOG(LL_ERROR, ("flash write error! abort at %d recieved bytes.", state->recieved));
+				c->flags |= MG_F_CLOSE_IMMEDIATELY;
+				state->status = 500;
+				break;
+			}
 			state->curr_blk = state->next_blk;
 
 			memcpy(&state->data[0], hm->body.p + state->left_in_block, hm->body.len - state->left_in_block);
@@ -100,11 +118,6 @@ static void http_cb(struct mg_connection *c, int ev, void *ev_data, void *ud) {
 			memcpy(&state->data[BLOCK_SIZE - state->left_in_block], hm->body.p, hm->body.len);
 		}
 		state->recieved += (uint32) hm->body.len;
-
-		/*if (n != hm->body.len) { //TODO
-			c->flags |= MG_F_CLOSE_IMMEDIATELY;
-			state->status = 500;
-		}*/
 		c->flags |= MG_F_DELETE_CHUNK;
 		break;
 	case MG_EV_HTTP_REPLY:
@@ -117,9 +130,17 @@ static void http_cb(struct mg_connection *c, int ev, void *ev_data, void *ud) {
 		LOG(LL_INFO, ("HTTP status is %d, recieved %d bytes", state->status, state->recieved));
 		if (state->status == 200) {
 			// write last block
-			spi_flash_erase_sector(state->curr_blk);
+			if ( spi_flash_erase_sector(state->curr_blk) != 0 ) {
+				LOG(LL_ERROR, ("flash delete error! abort at %d recieved bytes.", state->recieved));
+				state->status = 500;
+				break;
+			}
 			state->left_in_block = ( (state->curr_blk + 1) * BLOCK_SIZE ) - state->dest - state->recieved;
-			spi_flash_write( state->curr_blk * BLOCK_SIZE, (uint32 *) state->data, BLOCK_SIZE - state->left_in_block);
+			if ( spi_flash_write( state->curr_blk * BLOCK_SIZE, (uint32 *) state->data, BLOCK_SIZE - state->left_in_block) != 0 ) {
+				LOG(LL_ERROR, ("flash write error! abort at %d recieved bytes.", state->recieved));
+				state->status = 500;
+				break;
+			}
 			LOG(LL_DEBUG, ("last block dump done"));
 
 			block_copy( (*rboot_cfg).roms[TEMP_STORAGE], 0, state->recieved ); //TODO move me
