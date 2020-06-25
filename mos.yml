@@ -1,7 +1,7 @@
 author: mark dornbach
 platform: esp8266
 description: a minimal firmware for ota flashing tasmota from mongoose os
-version: 0.2.0
+version: 0.2.1
 
 libs_version:        latest
 modules_version:     latest
@@ -14,7 +14,7 @@ tags:                [c, tuya, tasmota, mongoose]
 # Custom configuration
 config_schema:
   #### sys ####
-  - ["debug.level", 3]                     # 0 = ERROR, 1 = WARN, 2 = INFO, 3+ = DEBUG
+  - ["debug.level", 2]                     # 0 = ERROR, 1 = WARN, 2 = INFO, 3+ = DEBUG
   #### wifi ####
   - ["wifi.ap.enable",             false ]
   - ["wifi.sta.enable",             true ] # join wifi as client
