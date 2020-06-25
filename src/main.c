@@ -11,7 +11,6 @@
 	* evaluate SpiFlashOpResult for spi_flash_read, write, erase
 	* if failed wait 60 sec and reboot
 	* disable wdt and interrupts during critical write operations
-	* remove ugly fix for closing connection
 */
 
 /*
@@ -65,7 +64,6 @@ struct state {
 	uint32 recieved;                // number of bytes recieved
 	uint32 dest;			// target flash address
 	char data[BLOCK_SIZE];		// buffer for a block
-	time_t last_write;		// TODO this is a bad fix and should be replaced!
 };
 
 static void http_cb(struct mg_connection *c, int ev, void *ev_data, void *ud) {
@@ -91,7 +89,6 @@ static void http_cb(struct mg_connection *c, int ev, void *ev_data, void *ud) {
 
 			memcpy(&state->data[0], hm->body.p + left_in_block, hm->body.len - left_in_block);
 
-			state->last_write = time(NULL);// TODO this is part of the ugly fix we use to terminate the connection
 		} else {
 			memcpy(&state->data[BLOCK_SIZE - left_in_block], hm->body.p, hm->body.len);
 		}
@@ -117,13 +114,8 @@ static void http_cb(struct mg_connection *c, int ev, void *ev_data, void *ud) {
 
 			block_copy( (*get_rboot_config()).roms[0], 0, state->recieved );
 			mgos_system_restart_after(200);
-		}
-		free(state);
-		break;
-	case MG_EV_POLL:	// TODO this is part of the ugly fix we use to terminate the connection
-		if ( ( time(NULL) - state->last_write ) > 30) {
-			state->status = 200;
-			c->flags |= MG_F_CLOSE_IMMEDIATELY;
+		} else {
+			LOG(LL_ERROR, ("HTTP state not 200, abort!"));
 		}
 		break;
 	}
