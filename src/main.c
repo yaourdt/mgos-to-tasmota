@@ -5,7 +5,7 @@
 #define BLOCK_SIZE 4096
 #define CHUNK_SIZE 4096
 #define TEMP_STORAGE 0
-#define DOWNLOAD_URL "https://raw.githubusercontent.com/ct-Open-Source/tuya-convert/master/files/tasmota.bin"
+#define DOWNLOAD_URL "https://raw.githubusercontent.com/yaourdt/mgos-to-tasmota/master/binary/tasmota.bin"
 
 // current bootloader configuration
 rboot_config *rboot_cfg;
