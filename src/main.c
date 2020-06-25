@@ -4,6 +4,11 @@
 
 #define BLOCK_SIZE 4096
 #define CHUNK_SIZE 4096
+#define TEMP_STORAGE 0
+#define DOWNLOAD_URL "https://raw.githubusercontent.com/ct-Open-Source/tuya-convert/master/files/tasmota.bin"
+
+// current bootloader configuration
+rboot_config *rboot_cfg;
 
 /*
 	TODO
@@ -60,7 +65,8 @@ void block_copy(uint32 src, uint32 dest, uint32 length) {
 
 struct state {
 	int status;                     // request status
-	uint curr_blk;			// current block to be written
+	uint curr_blk, next_blk;	// current / next block to be written
+	uint left_in_block;		// bytes left until current buffer is full
 	uint32 recieved;                // number of bytes recieved
 	uint32 dest;			// target flash address
 	char data[BLOCK_SIZE];		// buffer for a block
@@ -69,28 +75,29 @@ struct state {
 static void http_cb(struct mg_connection *c, int ev, void *ev_data, void *ud) {
 	struct http_message *hm = (struct http_message *) ev_data;
 	struct state *state     = (struct state *) ud;
-	uint next_blk, left_in_block;
 
 	switch (ev) {
 	case MG_EV_CONNECT:
+		// sent when a new outbound connection is created
 		state->status = *(int *) ev_data;
 		break;
 	case MG_EV_HTTP_CHUNK:
-		//TODO comment whats going on here
-		next_blk = ( state->dest + state->recieved + (uint32) hm->body.len ) / BLOCK_SIZE;
-		left_in_block = ( (state->curr_blk + 1) * BLOCK_SIZE ) - state->dest - state->recieved;
+		// esp8266 expects flash to be erased and written in blocks of 4kb, but webservers send
+		// chunks of data in whatever size they please. we thus buffer the data and write it
+		// whenever a block is full
+		state->next_blk      = ( state->dest + state->recieved + (uint32) hm->body.len ) / BLOCK_SIZE;
+		state->left_in_block = ( (state->curr_blk + 1) * BLOCK_SIZE ) - state->dest - state->recieved;
 
-		if ( next_blk > state->curr_blk ) {
-			memcpy(&state->data[BLOCK_SIZE - left_in_block], hm->body.p, left_in_block);
+		if ( state->next_blk > state->curr_blk ) {
+			memcpy(&state->data[BLOCK_SIZE - state->left_in_block], hm->body.p, state->left_in_block);
 
 			spi_flash_erase_sector(state->curr_blk);
 			spi_flash_write( state->curr_blk * BLOCK_SIZE, (uint32 *) state->data, BLOCK_SIZE);
-			state->curr_blk = next_blk;
+			state->curr_blk = state->next_blk;
 
-			memcpy(&state->data[0], hm->body.p + left_in_block, hm->body.len - left_in_block);
-
+			memcpy(&state->data[0], hm->body.p + state->left_in_block, hm->body.len - state->left_in_block);
 		} else {
-			memcpy(&state->data[BLOCK_SIZE - left_in_block], hm->body.p, hm->body.len);
+			memcpy(&state->data[BLOCK_SIZE - state->left_in_block], hm->body.p, hm->body.len);
 		}
 		state->recieved += (uint32) hm->body.len;
 
@@ -101,18 +108,21 @@ static void http_cb(struct mg_connection *c, int ev, void *ev_data, void *ud) {
 		c->flags |= MG_F_DELETE_CHUNK;
 		break;
 	case MG_EV_HTTP_REPLY:
+		// set status once file transfer is done
 		state->status = hm->resp_code;
 		c->flags |= MG_F_CLOSE_IMMEDIATELY;
 		break;
 	case MG_EV_CLOSE:
+		// executed upon close connection
 		LOG(LL_INFO, ("HTTP status is %d, recieved %d bytes", state->status, state->recieved));
 		if (state->status == 200) {
+			// write last block
 			spi_flash_erase_sector(state->curr_blk);
-			left_in_block = ( (state->curr_blk + 1) * BLOCK_SIZE ) - state->dest - state->recieved;
-			spi_flash_write( state->curr_blk * BLOCK_SIZE, (uint32 *) state->data, BLOCK_SIZE - left_in_block);
-			LOG(LL_INFO, ("Last block dump done, moving %d bytes to address 0x0", state->recieved));
+			state->left_in_block = ( (state->curr_blk + 1) * BLOCK_SIZE ) - state->dest - state->recieved;
+			spi_flash_write( state->curr_blk * BLOCK_SIZE, (uint32 *) state->data, BLOCK_SIZE - state->left_in_block);
+			LOG(LL_DEBUG, ("last block dump done"));
 
-			block_copy( (*get_rboot_config()).roms[0], 0, state->recieved );
+			block_copy( (*rboot_cfg).roms[TEMP_STORAGE], 0, state->recieved ); //TODO move me
 			mgos_system_restart_after(200);
 		} else {
 			LOG(LL_ERROR, ("HTTP state not 200, abort!"));
@@ -143,6 +153,7 @@ void download_file_to_flash(char *url, uint32 dest) {
 	}
 
 	// TODO wait on download to finish, then continue here. also, return status
+	// free(state);
 	return;
 };
 
@@ -150,9 +161,7 @@ void download_file_to_flash(char *url, uint32 dest) {
 static void online_cb(int ev, void *evd, void *arg) {
 	if ( ev == MGOS_NET_EV_IP_ACQUIRED ) {
 		LOG(LL_INFO, ("device is online, downloading tasmota"));
-
-		char url[100] = "https://raw.githubusercontent.com/ct-Open-Source/tuya-convert/master/files/tasmota.bin"; // TODO
-		download_file_to_flash( url, (*get_rboot_config()).roms[0] );						  // TODO
+		download_file_to_flash(DOWNLOAD_URL, (*rboot_cfg).roms[TEMP_STORAGE] );
 	}
 	(void) evd;
 	(void) arg;
@@ -160,7 +169,6 @@ static void online_cb(int ev, void *evd, void *arg) {
 
 enum mgos_app_init_result mgos_app_init(void) {
 	// get current bootloader configuration
-	rboot_config *rboot_cfg;
 	rboot_cfg = get_rboot_config();
 
 	// if we are running from app0, move flash content to app1 (and fs0 -> fs1) and reboot

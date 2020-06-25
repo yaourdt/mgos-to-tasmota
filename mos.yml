@@ -1,7 +1,7 @@
 author: mark dornbach
 platform: esp8266
 description: a minimal firmware for ota flashing tasmota from mongoose os
-version: 0.1.0
+version: 0.2.0
 
 libs_version:        latest
 modules_version:     latest
