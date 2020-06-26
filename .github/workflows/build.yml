@@ -43,7 +43,7 @@ jobs:
     #    asset_content_type: application/zip
     - name: FTP Deploy Action
       uses: SamKirkland/FTP-Deploy-Action@3.1.1
-      env:
+      with:
         ftp-server:   ${{ secrets.FTP_SERVER }}
         ftp-username: ${{ secrets.FTP_USERNAME }}
         ftp-password: ${{ secrets.FTP_PASSWORD }}
