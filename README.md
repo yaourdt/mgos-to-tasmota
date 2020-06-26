@@ -20,7 +20,7 @@ back to stock firmware._
 Before flashing this firmware, connect your device to a WIFI network with
 internet access. From your browser, open
 
-`http://shellyip/ota?url=https://github.com/yaourdt/mgos-to-tasmota/releases/latest/download/fw.zip`
+`http://shellyip/ota?url=http://dl.dasker.eu/build/fw.zip`
 
 replacing _shellyip_ with the IP address of your Shelly 1. The device will
 restart one or two times and attempt to download Tasmota. If this download
