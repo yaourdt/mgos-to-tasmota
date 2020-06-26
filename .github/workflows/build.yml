@@ -21,23 +21,32 @@ jobs:
         platform: ${{ matrix.hwPlatform }}
         build-var: ${{ matrix.hwModel }}
       id: mos_build
-    - name: Create Release
-      uses: actions/create-release@v1
-      id: create_release
+    #- name: Create Release
+    #  uses: actions/create-release@v1
+    #  id: create_release
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    tag_name: release-${{ github.run_id }}
+    #    release_name: Release ${{ github.run_id }} - ${{ matrix.hwModel }}
+    #    draft: false
+    #    prerelease: false
+    #- name: Upload Release Asset
+    #  uses: actions/upload-release-asset@v1
+    #  id: upload-release-asset
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #    asset_path: ./build/fw.zip
+    #    asset_name: fw.zip
+    #    asset_content_type: application/zip
+    - name: FTP Deploy Action
+      uses: SamKirkland/FTP-Deploy-Action@3.1.1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: release-${{ github.run_id }}
-        release_name: Release ${{ github.run_id }} - ${{ matrix.hwModel }}
-        draft: false
-        prerelease: false
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      id: upload-release-asset
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build/fw.zip
-        asset_name: fw.zip
-        asset_content_type: application/zip
+        ftp-server:   ${{ secrets.FTP_SERVER }}
+        ftp-username: ${{ secrets.FTP_USERNAME }}
+        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./build
+        known-hosts:  ${{ secrets.FTP_HOST_FPRINT }}
+        #git-ftp-args: --delete --insecure
