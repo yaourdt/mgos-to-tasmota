@@ -49,4 +49,4 @@ jobs:
         ftp-password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./build
         known-hosts:  ${{ secrets.FTP_HOST_FPRINT }}
-        #git-ftp-args: --delete --insecure
+        git-ftp-args: --insecure
