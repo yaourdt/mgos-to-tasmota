@@ -3,8 +3,8 @@
 ## Overview
 
 This is a first working draft for an intermediate firmware that can be used to
-install [Tasmota](https://github.com/arendst/Tasmota) on a Shelly 1 switch. It
-will install the same version of Tasmota as [Tuya Convert](https://github.com/ct-Open-Source/tuya-convert/),
+install [Tasmota](https://github.com/arendst/Tasmota) on various Shelly
+models. It will install the same version of Tasmota as [Tuya Convert](https://github.com/ct-Open-Source/tuya-convert/),
 and you can continue from there to your favourite target release.
 
 ## Install
@@ -20,7 +20,15 @@ back to stock firmware._
 Before flashing this firmware, connect your device to a WIFI network with
 internet access. From your browser, open
 
-`http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1.zip`
+  * Shelly1     `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1.zip`
+
+  * Shelly1PM   `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1PM.zip`
+
+  * ShellyPlugS `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyPlugS.zip`
+
+  * Shelly2     `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly2.zip`
+
+  * Shelly25    `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly25.zip`
 
 replacing _shellyip_ with the IP address of your Shelly 1. The device will
 restart one or two times and attempt to download Tasmota. If this download
@@ -39,11 +47,11 @@ which you can use for recovery.
 
 You can compile a binary version of this firmware using [mos tools](https://mongoose-os.com/docs/mongoose-os/quickstart/setup.md#1-download-and-install-mos-tool). Once installed, clone this repository and run
 `mos build --build-var MODEL=Shelly1 --platform esp8266` to create a binary
-located in `build/fw.zip`.
+for e.g. a Shelly1 switch located in `build/fw.zip`.
 
 ## Acknowledgments
 Thanks to [rojer](https://github.com/rojer) for helping me with the debugging of
-this code.
+the initial code.
 
 This firmware is build using a fork of [Mongoose OS docker action](https://github.com/dea82/mongoose-os-action)
 which can be found [here](https://github.com/yaourdt/mongoose-os-action).
