@@ -1,5 +1,6 @@
 author: mark dornbach
 description: a minimal firmware for ota flashing tasmota from mongoose os
+platform: esp8266
 version: 0.3.0
 
 libs_version:        latest
@@ -34,7 +35,6 @@ conds:
   - when: build_vars.MODEL == "Shelly1"
     apply:
       name: switch1
-      platform: esp8266
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -43,7 +43,6 @@ conds:
   - when: build_vars.MODEL == "Shelly1PM"
     apply:
       name: switch1pm
-      platform: esp8266
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -52,7 +51,6 @@ conds:
   - when: build_vars.MODEL == "ShellyPlugS"
     apply:
       name: shelly-plug-s
-      platform: esp8266
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -61,7 +59,6 @@ conds:
   - when: build_vars.MODEL == "Shelly2"
     apply:
       name: switch
-      platform: esp8266
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
@@ -70,7 +67,6 @@ conds:
   - when: build_vars.MODEL == "Shelly25"
     apply:
       name: switch25
-      platform: esp8266
       build_vars:
         FS_SIZE: 262144
         FLASH_SIZE: 2097152
