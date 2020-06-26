@@ -51,13 +51,14 @@ jobs:
     - name: Rename file before FTP upload
       shell: bash
       run: |
-        mv ./build/fw.zip ./build/mg2tasmota-${{ matrix.hwModel }}.zip
+        mkdir ./firmware
+        cp ./build/fw.zip ./firmware/mg2tasmota-${{ matrix.hwModel }}.zip
     - name: FTP Deploy Action
       uses: SamKirkland/FTP-Deploy-Action@3.1.1
       with:
         ftp-server:   ${{ secrets.FTP_SERVER }}
         ftp-username: ${{ secrets.FTP_USERNAME }}
         ftp-password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./build
+        local-dir: ./firmware
         known-hosts:  ${{ secrets.FTP_HOST_FPRINT }}
         git-ftp-args: --insecure
