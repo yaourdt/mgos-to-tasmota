@@ -5,7 +5,6 @@
 #define BLOCK_SIZE 4096
 #define CHUNK_SIZE 4096
 #define TEMP_STORAGE 0
-#define DOWNLOAD_URL "https://raw.githubusercontent.com/yaourdt/mgos-to-tasmota/master/binary/tasmota.bin"
 
 // current bootloader configuration
 rboot_config *rboot_cfg;
@@ -156,7 +155,7 @@ static void http_cb(struct mg_connection *c, int ev, void *ev_data, void *ud) {
 	url	src url
 	dest	destination addess
 */
-void download_file_to_flash(char *url, uint32 dest) {
+void download_file_to_flash(const char *url, uint32 dest) {
 	struct state *state;
 	if ((state = calloc(1, sizeof(*state))) == NULL) {
 		LOG(LL_ERROR, ("out of memory"));
@@ -182,7 +181,7 @@ void download_file_to_flash(char *url, uint32 dest) {
 static void online_cb(int ev, void *evd, void *arg) {
 	if ( ev == MGOS_NET_EV_IP_ACQUIRED ) {
 		LOG(LL_INFO, ("device is online, downloading tasmota"));
-		download_file_to_flash(DOWNLOAD_URL, (*rboot_cfg).roms[TEMP_STORAGE] );
+		download_file_to_flash(mgos_sys_config_get_mg2x_url(), (*rboot_cfg).roms[TEMP_STORAGE] );
 	}
 	(void) evd;
 	(void) arg;

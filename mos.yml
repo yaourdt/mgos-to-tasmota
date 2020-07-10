@@ -1,7 +1,7 @@
 author: mark dornbach
 description: a minimal firmware for ota flashing tasmota from mongoose os
 platform: esp8266
-version: 0.3.0
+version: 0.3.1
 
 libs_version:        latest
 modules_version:     latest
@@ -21,6 +21,7 @@ config_schema:
   - ["sta_connect_timeout",           30 ] # timeout for wifi connection / seconds
   - ["wifi.sta1.ssid",    "mgos-recover" ] # fallback SSID
   - ["wifi.sta1.pass",      "RJoPuKC3u5" ] # fallback password
+  - ["mg2x", "o", {"title": "Settings for this firmware"}]
 
 # External libs
 libs:
@@ -32,6 +33,14 @@ libs:
   - origin: https://github.com/mongoose-os-libs/ca-bundle               # CA certificates
 
 conds:
+  - when: build_vars.TARGETFW == "tasmota"
+    apply:
+      config_schema:
+        - ["mg2x.url", "s", "https://raw.githubusercontent.com/yaourdt/mgos-to-tasmota/master/binary/tasmota.bin", {"title": "URL of target firmware"}]
+  - when: build_vars.TARGETFW == "haa"
+    apply:
+      config_schema:
+        - ["mg2x.url", "s", "https://raw.githubusercontent.com/yaourdt/mgos-to-tasmota/master/binary/haaboot.bin", {"title": "URL of target firmware"}]
   - when: build_vars.MODEL == "Shelly1"
     apply:
       name: switch1
