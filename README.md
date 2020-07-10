@@ -1,17 +1,18 @@
-# A minimal firmware for OTA (over the air) flashing Tasmota starting from Mongoose OS
+# Mg2x - a minimal firmware for OTA (over the air) flashing various target firmwares starting from Mongoose OS
 
 ## Overview
 
-This is a first working draft for an intermediate firmware that can be used to
-install [Tasmota](https://github.com/arendst/Tasmota) on various Shelly
-models. It will install the same version of Tasmota as [Tuya Convert](https://github.com/ct-Open-Source/tuya-convert/),
+Mg2x is an intermediate firmware that can be used to install [Tasmota](https://github.com/arendst/Tasmota)
+or [Home Accessory Architect](https://github.com/RavenSystem/haa) on various
+Shelly models. For Tasmota, it will install the same version as [Tuya Convert](https://github.com/ct-Open-Source/tuya-convert/),
 and you can continue from there to your favourite target release.
 
 ## Install
 
-**Warning:** _This application is still at an early stage. If something fails,
-your device may be bricked, if you don't know how to flash a new firmware over a
-wired connection. Proceed with caution!_
+**Warning:** _This application should generally be safe to use for all supported
+devices. Still, overwriting a devices boot loader via OTA update is a risky
+operation. If something unexpected fails, your device may be bricked, unless you
+know how to flash a new firmware over a wired connection._
 
 **Warning:** _As of now, once you convert to Tasmota, there is no way back via
 an OTA update to Mongoose OS! You'll need a wired connection to get your device
@@ -36,6 +37,9 @@ succeeds, the device will restart again, and you will see a new WIFI network
 labeled _tasmota-????_. This process should take no longer than 4 - 5 minutes,
 depending on your network connection.
 
+If you replace _mg2tasmota_ by _mg2haa_ in above URLs, your device will install
+the Home Accessory Architect firmware instead of Tasmota.
+
 If the download fails, or your internet connection is disrupted, simply turn the
 device off and on again, the intermediate firmware will retry until it succeeds.
 
@@ -46,8 +50,8 @@ which you can use for recovery.
 ## Build the firmware yourself
 
 You can compile a binary version of this firmware using [mos tools](https://mongoose-os.com/docs/mongoose-os/quickstart/setup.md#1-download-and-install-mos-tool). Once installed, clone this repository and run
-`mos build --build-var MODEL=Shelly1 --platform esp8266` to create a binary
-for e.g. a Shelly1 switch located in `build/fw.zip`.
+`mos build --build-var MODEL=Shelly1 --build-var TARGETFW=tasmota --platform esp8266`
+to create a binary for e.g. a Shelly1 switch located in `build/fw.zip`.
 
 ## Acknowledgments
 Thanks to [rojer](https://github.com/rojer) for helping me with the debugging of

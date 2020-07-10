@@ -14,6 +14,16 @@ rboot_config *rboot_cfg;
 	* hash verify download!
 	* if failed wait 60 sec and reboot
 	* disable wdt and interrupts during critical write operations
+	* move block for bootloader (0...4096) and its config (BOOT_CONFIG_ADDR ... BOOT_CONFIG_ADDR) last
+	* move to esp flash write lib:
+	#include "esp_flash_writer.h"
+	static struct esp_flash_write_ctx s_wctx;
+	...
+	case MG_EV_CONNECT:
+		esp_init_flash_write_ctx(0x2000, (0x100000 - 0x2000));
+	...
+	case MG_EV_HTTP_CHUNK:
+		esp_flash_write(&s_wctx, hm->body);
 */
 
 /*
