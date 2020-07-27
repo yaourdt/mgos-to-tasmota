@@ -45,6 +45,9 @@ depending on your network connection.
 If you replace _mg2tasmota_ by _mg2haa_ in above URLs, your device will install
 the Home Accessory Architect firmware instead of Tasmota.
 
+There is a *video tutorial* on how to flash this firmware: https://youtu.be/_oRr8FZyyQ0
+Thank you, [digiblur](https://github.com/digiblur)!
+
 If the download fails, or your internet connection is disrupted, simply turn the
 device off and on again, the intermediate firmware will retry until it succeeds.
 
