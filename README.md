@@ -21,15 +21,20 @@ back to stock firmware._
 Before flashing this firmware, connect your device to a WIFI network with
 internet access. From your browser, open
 
-  * Shelly1     `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1.zip`
+  * Shelly1 `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1.zip`
+  	* Tasmota template: `{"NAME":"Shelly 1","GPIO":[0,0,0,0,21,82,0,0,0,0,0,0,0],"FLAG":0,"BASE":46}`
 
-  * Shelly1PM   `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1PM.zip`
-
+  * Shelly1PM `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1PM.zip`
+  	* Tasmota template: `{"NAME":"Shelly 1PM","GPIO":[56,0,0,0,82,134,0,0,0,0,0,21,0],"FLAG":2,"BASE":18}`
+    
   * ShellyPlugS `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyPlugS.zip`
-
-  * Shelly2     `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly2.zip`
-
-  * Shelly25    `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly25.zip`
+  	* Tasmota template: ` {"NAME":"Shelly Plug S","GPIO":[57,255,56,255,0,134,0,0,131,17,132,21,0],"FLAG":2,"BASE":45}`
+			
+  * Shelly2 `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly2.zip`
+  	* Tasmota template:`{"NAME":"Shelly 2","GPIO":[0,135,0,136,21,22,0,0,9,0,10,137,0],"FLAG":0,"BASE":47}`
+			
+  * Shelly2.5 `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly25.zip`
+  	* Tasmota template: `{"NAME":"Shelly 2.5","GPIO":[56,0,17,0,21,83,0,0,6,82,5,22,156],"FLAG":2,"BASE":18}`
 
 replacing _shellyip_ with the IP address of your Shelly 1. The device will
 restart one or two times and attempt to download Tasmota. If this download
