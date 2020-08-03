@@ -10,7 +10,7 @@ and you can continue from there to your favourite target release.
 ## Install
 
 **Warning:** _This application should generally be safe to use for all supported
-devices. Still, overwriting a devices boot loader via OTA update is a risky
+devices. Still, overwriting a device's boot loader via OTA update is a risky
 operation. If something unexpected fails, your device may be bricked, unless you
 know how to flash a new firmware over a wired connection._
 
@@ -21,20 +21,38 @@ back to stock firmware._
 Before flashing this firmware, connect your device to a WIFI network with
 internet access. From your browser, open
 
-  * Shelly1 `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1.zip`
+  * Shelly 1 `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1.zip`
   	* Tasmota template: `{"NAME":"Shelly 1","GPIO":[0,0,0,0,21,82,0,0,0,0,0,0,0],"FLAG":0,"BASE":46}`
 
-  * Shelly1PM `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1PM.zip`
+  * Shelly 1PM `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1PM.zip`
   	* Tasmota template: `{"NAME":"Shelly 1PM","GPIO":[56,0,0,0,82,134,0,0,0,0,0,21,0],"FLAG":2,"BASE":18}`
-    
-  * ShellyPlugS `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyPlugS.zip`
+
+  * Shelly Plug S `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyPlugS.zip`
   	* Tasmota template: ` {"NAME":"Shelly Plug S","GPIO":[57,255,56,255,0,134,0,0,131,17,132,21,0],"FLAG":2,"BASE":45}`
-			
-  * Shelly2 `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly2.zip`
+
+  * Shelly 2 `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly2.zip`
   	* Tasmota template:`{"NAME":"Shelly 2","GPIO":[0,135,0,136,21,22,0,0,9,0,10,137,0],"FLAG":0,"BASE":47}`
-			
-  * Shelly2.5 `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly25.zip`
+
+  * Shelly 2.5 `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly25.zip`
   	* Tasmota template: `{"NAME":"Shelly 2.5","GPIO":[56,0,17,0,21,83,0,0,6,82,5,22,156],"FLAG":2,"BASE":18}`
+
+  * Shelly RGBW2 `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyRGBW2.zip`
+  	* Tasmota template: `{"NAME":"Shelly RGBW2","GPIO":[0,0,52,0,40,255,0,0,37,17,39,38,0],"FLAG":0,"BASE":18}`
+
+  * Shelly Dimmer 1 `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyDimmer1.zip`
+  	* Tasmota template: **not yet available, only flash if you a perfectly certain about what you are doing**
+
+  * Shelly Dimmer 2 `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyDimmer2.zip`
+  	* Tasmota template: **not yet available, only flash if you a perfectly certain about what you are doing**
+
+  * Shelly EM `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyEM.zip`
+  	* Tasmota template: `{"NAME":"Shelly EM","GPIO":[0,0,0,0,0,0,0,0,6,156,5,21,0],"FLAG":15,"BASE":18}`
+
+  * Shelly Bulb `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyBulb.zip`
+  	* Tasmota template: **not yet available, only flash if you a perfectly certain about what you are doing**
+
+  * Shelly Vintage `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyVintage.zip`
+  	* Tasmota template: **not yet available, only flash if you a perfectly certain about what you are doing**
 
 replacing _shellyip_ with the IP address of your Shelly 1. The device will
 restart one or two times and attempt to download Tasmota. If this download
