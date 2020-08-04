@@ -1,4 +1,7 @@
-# Mg2x - a minimal firmware for OTA (over the air) flashing various target firmwares starting from Mongoose OS
+# mg2x
+
+A minimal firmware for OTA (over the air) flashing various target firmwares
+starting from Mongoose OS.
 
 ## Overview
 
