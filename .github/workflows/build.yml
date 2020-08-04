@@ -49,16 +49,3 @@ jobs:
         asset_path: ./build/fw.zip
         asset_name: mg2${{ matrix.targetFw }}-${{ matrix.hwModel }}.zip
         asset_content_type: application/zip
-    - name: Rename file before FTP upload
-      shell: bash
-      run: |
-        mkdir ./firmware
-        cp ./build/fw.zip ./firmware/mg2${{ matrix.targetFw }}-${{ matrix.hwModel }}.zip
-    - name: FTP Deploy Action
-      uses: SamKirkland/FTP-Deploy-Action@3.1.1
-      with:
-        ftp-server:   ${{ secrets.FTP_SERVER }}
-        ftp-username: ${{ secrets.FTP_USERNAME }}
-        ftp-password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./firmware
-        known-hosts:  ${{ secrets.FTP_HOST_FPRINT }}
