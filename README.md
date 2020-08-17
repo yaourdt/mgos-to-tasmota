@@ -30,7 +30,8 @@ labeled _tasmota-????_. This process should take no longer than 4 - 5 minutes,
 depending on your network connection.
 
 If you replace `mg2tasmota` by `mg2haa` in the update URLs, your device will
-install the Home Accessory Architect firmware instead of Tasmota.
+install the Home Accessory Architect firmware instead of Tasmota. For
+`mg2espurna` instead of `mg2tasmota`, ESPurna Firmware will be installed.
 
 There is a [video tutorial](https://youtu.be/_oRr8FZyyQ0) on how to flash this
 firmware. Thank you, [digiblur](https://github.com/digiblur)!

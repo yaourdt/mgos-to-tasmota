@@ -26,7 +26,7 @@ jobs:
       matrix:
         hwModel:    [Shelly1, Shelly1PM, ShellyPlugS, Shelly2, Shelly25, ShellyRGBW2, ShellyDimmer1, ShellyDimmer2, ShellyEM, ShellyBulb, ShellyVintage]
         hwPlatform: [esp8266]
-        targetFw:   [tasmota, haa]
+        targetFw:   [tasmota, haa, espurna]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
