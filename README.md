@@ -61,8 +61,8 @@ Shelly Duo      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmo
 Shelly H&T      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyHT.zip`      | **not yet available, only flash if you a perfectly certain about what you are doing**
 
 For your convenience, the table above also lists the matching Tasmota device
-templates from templates.blakadder.com which you can use to configure Tasmota
-after installation.
+templates from [templates.blakadder.com](https://templates.blakadder.com) which 
+you can use to configure Tasmota after installation.
 
 ## Build the firmware yourself
 
