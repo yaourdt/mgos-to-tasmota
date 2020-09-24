@@ -36,7 +36,7 @@ conds:
   - when: build_vars.TARGETFW == "tasmota"
     apply:
       config_schema:
-        - ["mg2x.url", "s", "https://raw.githubusercontent.com/yaourdt/mgos-to-tasmota/master/binary/tasmota.bin", {"title": "URL of target firmware"}]
+        - ["mg2x.url", "s", "https://raw.githubusercontent.com/yaourdt/mgos-to-tasmota/master/binary/tasmota-8.5.bin", {"title": "URL of target firmware"}]
   - when: build_vars.TARGETFW == "haa"
     apply:
       config_schema:
