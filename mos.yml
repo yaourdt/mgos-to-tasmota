@@ -141,3 +141,19 @@ conds:
         FLASH_SIZE: 2097152
         BOOT_CONFIG_ADDR: 0x7000
         MGOS_ROOT_FS_TYPE: SPIFFS
+  - when: build_vars.MODEL == "ShellyHT"
+    apply:
+      name: ht-sensor
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x7000
+        MGOS_ROOT_FS_TYPE: SPIFFS
+  - when: build_vars.MODEL == "ShellyBulbDuo"
+    apply:
+      name: bulbduo
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 2097152
+        BOOT_CONFIG_ADDR: 0x7000
+        MGOS_ROOT_FS_TYPE: SPIFFS

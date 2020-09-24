@@ -57,6 +57,8 @@ Shelly EM       | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmo
 Shelly Bulb     | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyBulb.zip`    | **not yet available, only flash if you a perfectly certain about what you are doing**
 Shelly Vintage  | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyVintage.zip` | **not yet available, only flash if you a perfectly certain about what you are doing**
 Shelly Plug US  | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyPlugUS.zip`  | `{"NAME":"ShellyPlugUS","GPIO":[52,255,57,255,21,134,0,0,131,17,132,157,0],"FLAG":0,"BASE":45}`
+Shelly Duo      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyBulbDuo.zip` | **not yet available, only flash if you a perfectly certain about what you are doing**
+Shelly H&T      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyHT.zip`      | **not yet available, only flash if you a perfectly certain about what you are doing**
 
 For your convenience, the table above also lists the matching Tasmota device
 templates from templates.blakadder.com which you can use to configure Tasmota
