@@ -3,9 +3,9 @@ description: a minimal firmware for ota flashing tasmota from mongoose os
 platform: esp8266
 version: 0.3.1
 
-libs_version:        latest
-modules_version:     latest
-mongoose_os_version: latest
+libs_version:        ${mos.version}
+modules_version:     ${mos.version}
+mongoose_os_version: ${mos.version}
 manifest_version:    2020-01-29
 sources:             [src]
 filesystem:          [fs]
