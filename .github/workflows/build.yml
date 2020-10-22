@@ -52,4 +52,4 @@ jobs:
     - name: Upload to CF KV Store
       uses: wei/curl@master
       with:
-        args: -X PUT "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/storage/kv/namespaces/${{ secrets.CF_KV_NAMESPACE_ID }}/values/firmware/mg2${{ matrix.targetFw }}-${{ matrix.hwModel }}.zip" -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" --data-binary "@./build/fw.zip"
+        args: '-X PUT "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/storage/kv/namespaces/${{ secrets.CF_KV_NAMESPACE_ID }}/values/firmware/mg2${{ matrix.targetFw }}-${{ matrix.hwModel }}.zip" -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" --data-binary "@./build/fw.zip"'
