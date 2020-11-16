@@ -17,9 +17,10 @@ devices. Still, overwriting a device's boot loader via OTA update is a risky
 operation. If something unexpected fails, your device may be bricked, unless you
 know how to flash a new firmware over a wired connection._
 
-**Warning:** _As of now, once you convert to Tasmota, there is no way back via
-an OTA update to Mongoose OS! You'll need a wired connection to get your device
-back to stock firmware._
+**Warning:** _You can go back to Mongoose OS via OTA as well, using [this firmware](https://github.com/yaourdt/tasmota-to-mgos),
+but be aware the application is still at an early stage. If something fails,
+your device may be bricked, if you don't know how to flash a new firmware over
+a wired connection._
 
 Before flashing this firmware, connect your device to a WIFI network with
 internet access. From your browser, open the update URL for your device from the
