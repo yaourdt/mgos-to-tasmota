@@ -24,7 +24,7 @@ jobs:
     needs: release
     strategy:
       matrix:
-        hwModel:    [Shelly1, Shelly1PM, ShellyPlugS, Shelly2, Shelly25, ShellyRGBW2, ShellyDimmer1, ShellyDimmer2, ShellyEM, ShellyBulb, ShellyVintage, ShellyPlugUS, ShellyHT, ShellyBulbDuo, ShellyI3]
+        hwModel:    [Shelly1, Shelly1PM, ShellyPlugS, Shelly2, Shelly25, ShellyRGBW2, ShellyDimmer1, ShellyDimmer2, ShellyEM, ShellyBulb, ShellyVintage, ShellyPlugUS, ShellyHT, ShellyBulbDuo, ShellyI3, Shelly1L]
         hwPlatform: [esp8266]
         targetFw:   [tasmota, haa, espurna]
     runs-on: ubuntu-latest
