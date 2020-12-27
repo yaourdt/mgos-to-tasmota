@@ -24,7 +24,7 @@ a wired connection._
 
 Before flashing this firmware, connect your device to a WIFI network with
 internet access. From your browser, open the update URL for your device from the
-table below. Replace `shellyip` with the IP address of your Shelly 1. The device
+table below. Replace `shellyip` with the IP address of your Shelly. The device
 will restart one or two times and attempt to download Tasmota. If this download
 succeeds, the device will restart again, and you will see a new WIFI network
 labeled _tasmota-????_. This process should take no longer than 4 - 5 minutes,
@@ -68,6 +68,10 @@ Shelly Uni      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmo
 For your convenience, the table above also lists the matching Tasmota device
 templates from [templates.blakadder.com](https://templates.blakadder.com) which
 you can use to configure Tasmota after installation.
+
+## My device is not listed!
+
+If your device is not listed, please open a new issue so we can try to make it work. Please mention which of the many [Shelly firmware files](https://api.shelly.cloud/files/firmware) is the right one for your device.
 
 ## Build the firmware yourself
 
