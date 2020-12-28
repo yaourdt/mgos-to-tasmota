@@ -1,22 +1,27 @@
 name: Mongoose Shelly build
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 jobs:
   release:
     name: Create a new release
     runs-on: ubuntu-latest
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
+      release_version: ${{ steps.read_version.outputs.version }}
     steps:
+    - name: Read Version
+      id: read_version
+      run: |
+        echo ::set-output name=version::${GITHUB_REF#refs/*/}
     - name: Create Release
       uses: actions/create-release@v1
       id: create_release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: release-${{ github.run_id }}
-        release_name: Release ${{ github.run_id }}
+        tag_name: release-${{ steps.read_version.outputs.version }}
+        release_name: Release ${{ steps.read_version.outputs.version }}
         draft: false
         prerelease: false
   build:
