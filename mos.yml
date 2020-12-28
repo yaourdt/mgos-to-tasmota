@@ -36,7 +36,7 @@ conds:
   - when: build_vars.TARGETFW == "tasmota"
     apply:
       config_schema:
-        - ["mg2x.url", "s", "https://ota.tasmota.com/tasmota/release/tasmota.bin, {"title": "URL of target firmware"}]
+        - ["mg2x.url", "s", "https://ota.tasmota.com/tasmota/release/tasmota.bin", {"title": "URL of target firmware"}]
   - when: build_vars.TARGETFW == "haa"
     apply:
       config_schema:
