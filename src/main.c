@@ -96,12 +96,14 @@ static void http_cb(struct mg_connection *c, int ev, void *ev_data, void *ud) {
 	switch (ev) {
 	case MG_EV_CONNECT:
 		// sent when a new outbound connection is created
-		state->status = *(int *) ev_data;
+		state->status = 0;
 		break;
 	case MG_EV_HTTP_CHUNK:
 		// esp8266 expects flash to be erased and written in blocks of 4kb, but webservers send
 		// chunks of data in whatever size they please. we thus buffer the data and write it
 		// whenever a block is full
+		if (hm->resp_code != 200) { break; }
+
 		state->next_blk      = ( state->dest + state->recieved + (uint32) hm->body.len ) / BLOCK_SIZE;
 		state->left_in_block = ( (state->curr_blk + 1) * BLOCK_SIZE ) - state->dest - state->recieved;
 
@@ -130,8 +132,23 @@ static void http_cb(struct mg_connection *c, int ev, void *ev_data, void *ud) {
 		c->flags |= MG_F_DELETE_CHUNK;
 		break;
 	case MG_EV_HTTP_REPLY:
-		// set status once file transfer is done
-		state->status = hm->resp_code;
+		if (hm->resp_code == 302) {
+			// follow http redirect ...
+			for (int i = 0; i < MG_MAX_HTTP_HEADERS; i++) {
+				if ( mg_strstr(hm->header_names[i], mg_mk_str("location") ) != NULL ) {
+					LOG(LL_DEBUG, ("302 redirect to %.*s", hm->header_values[i].len, hm->header_values[i].p));
+
+					char *url;
+					asprintf(&url, "%.*s", hm->header_values[i].len, hm->header_values[i].p);
+					mg_connect_http(mgos_get_mgr(), http_cb, state, url, NULL, NULL);
+					break;
+				}
+			}
+		} else {
+			// ...or set status once file transfer is done
+			state->status = hm->resp_code;
+		}
+
 		c->flags |= MG_F_CLOSE_IMMEDIATELY;
 		break;
 	case MG_EV_CLOSE:
@@ -141,21 +158,21 @@ static void http_cb(struct mg_connection *c, int ev, void *ev_data, void *ud) {
 			// write last block
 			if ( spi_flash_erase_sector(state->curr_blk) != 0 ) {
 				LOG(LL_ERROR, ("flash delete error! abort at %d recieved bytes.", state->recieved));
-				state->status = 500;
 				break;
 			}
 			state->left_in_block = ( (state->curr_blk + 1) * BLOCK_SIZE ) - state->dest - state->recieved;
 			if ( spi_flash_write( state->curr_blk * BLOCK_SIZE, (uint32 *) state->data, BLOCK_SIZE - state->left_in_block) != 0 ) {
 				LOG(LL_ERROR, ("flash write error! abort at %d recieved bytes.", state->recieved));
-				state->status = 500;
 				break;
 			}
 			LOG(LL_DEBUG, ("last block dump done"));
 
 			block_copy( (*rboot_cfg).roms[TEMP_STORAGE], 0, state->recieved ); //TODO move me
 			mgos_system_restart_after(200);
+		} else if (state->status == 0) {
+			LOG(LL_INFO, ("Following HTTP redirect..."));
 		} else {
-			LOG(LL_ERROR, ("HTTP state not 200, abort!"));
+			LOG(LL_ERROR, ("HTTP response error: %d", state->status));
 		}
 		break;
 	}
@@ -176,21 +193,14 @@ void download_file_to_flash(const char *url, uint32 dest) {
 	state->curr_blk = dest / BLOCK_SIZE;
 
 	LOG(LL_DEBUG, ("fetching %s to 0x%x", url, dest));
-	if (!mg_connect_http(mgos_get_mgr(), http_cb, state, url, NULL, NULL)) {
-		free(state);
-		LOG(LL_ERROR, ("malformed URL"));
-		return;
-	}
-
-	// TODO wait on download to finish, then continue here. also, return status
-	// free(state);
+	mg_connect_http(mgos_get_mgr(), http_cb, state, url, NULL, NULL);
 	return;
 };
 
-// if we are online, lets download and flash tasmota
+// if we are online, lets download and flash the target firmware
 static void online_cb(int ev, void *evd, void *arg) {
 	if ( ev == MGOS_NET_EV_IP_ACQUIRED ) {
-		LOG(LL_INFO, ("device is online, downloading tasmota"));
+		LOG(LL_INFO, ("device is online, downloading target firmware"));
 		download_file_to_flash(mgos_sys_config_get_mg2x_url(), (*rboot_cfg).roms[TEMP_STORAGE] );
 	}
 	(void) evd;
