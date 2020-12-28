@@ -1,34 +1,34 @@
-# mg2x
+# Mongoose to Tasmota, Home Accessory Architect or ESPurna
 
 A minimal firmware for OTA (over the air) flashing various target firmwares
 starting from Mongoose OS.
 
 ## Overview
 
-Mg2x is an intermediate firmware that can be used to install [Tasmota](https://github.com/arendst/Tasmota)
-or [Home Accessory Architect](https://github.com/RavenSystem/haa) on various
-Shelly models. For Tasmota, it will install the same version as [Tuya Convert](https://github.com/ct-Open-Source/tuya-convert/),
-and you can continue from there to your favourite target release.
+This is an intermediate firmware that can be used to install [Tasmota](https://github.com/arendst/Tasmota),
+[Home Accessory Architect](https://github.com/RavenSystem/haa), or [ESPurna](https://github.com/xoseperez/espurna)
+on various Shelly models. It will install the latest stable release of the
+target firmware.
 
 ## Install
 
-**Warning:** _This application should generally be safe to use for all supported
+⚠ This application should generally be safe to use for all supported
 devices. Still, overwriting a device's boot loader via OTA update is a risky
 operation. If something unexpected fails, your device may be bricked, unless you
-know how to flash a new firmware over a wired connection._
+know how to flash a new firmware over a wired connection.
 
-**Warning:** _You can go back to Mongoose OS via OTA as well, using [this firmware](https://github.com/yaourdt/tasmota-to-mgos),
-but be aware the application is still at an early stage. If something fails,
-your device may be bricked, if you don't know how to flash a new firmware over
-a wired connection._
+ℹ You can go back to Mongoose OS via OTA as well, using [this firmware](https://github.com/yaourdt/tasmota-to-mgos),
+but be aware that if something fails, your device may be bricked, if you don't
+know how to flash a new firmware over a wired connection.
 
 Before flashing this firmware, connect your device to a WIFI network with
 internet access. From your browser, open the update URL for your device from the
 table below. Replace `shellyip` with the IP address of your Shelly. The device
-will restart one or two times and attempt to download Tasmota. If this download
-succeeds, the device will restart again, and you will see a new WIFI network
-labeled _tasmota-????_. This process should take no longer than 4 - 5 minutes,
-depending on your network connection.
+will restart one or two times and attempt to download the traget firmware. If
+this download succeeds, the device will restart again, and you will see a new
+WIFI network labeled _tasmota-????_, _HAA-????_, or _ESPURNA-????_.
+This process should take no longer than 4 - 5 minutes, depending on your network
+connection.
 
 If you replace `mg2tasmota` by `mg2haa` in the update URLs, your device will
 install the Home Accessory Architect firmware instead of Tasmota. For
@@ -69,9 +69,19 @@ For your convenience, the table above also lists the matching Tasmota device
 templates from [templates.blakadder.com](https://templates.blakadder.com) which
 you can use to configure Tasmota after installation.
 
+Home Accessory Architect will boot in setup mode, which is explained in the
+[HAA Wiki](https://github.com/RavenSystem/esp-homekit-devices/wiki/Setup-Mode).
+
+For ESPurna, the device will boot into the ESPurna base image. You can then
+either switch to a devices specific version, if your device is supported, or
+[start configuration](https://github.com/xoseperez/espurna/wiki/Configuration)
+from the base image.
+
 ## My device is not listed!
 
-If your device is not listed, please open a new issue so we can try to make it work. Please mention which of the many [Shelly firmware files](https://api.shelly.cloud/files/firmware) is the right one for your device.
+If your device is not listed, please open a new issue so we can try to make it
+work. Please mention which of the many [Shelly firmware files](https://api.shelly.cloud/files/firmware)
+is the right one for your device.
 
 ## Build the firmware yourself
 
