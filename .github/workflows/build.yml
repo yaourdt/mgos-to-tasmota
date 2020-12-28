@@ -2,8 +2,8 @@ name: Mongoose Shelly build
 on:
   push:
     tags:
-      - *.*.*
-      - '!*.*.*-norelease'
+      - 'v*'
+      - '!v*-norelease'
 jobs:
   release:
     name: Create a new release
