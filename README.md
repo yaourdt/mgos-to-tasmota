@@ -1,3 +1,5 @@
+![Mongoose Shelly build](https://github.com/yaourdt/mgos-to-tasmota/workflows/Mongoose%20Shelly%20build/badge.svg)
+
 # Mongoose to Tasmota, Home Accessory Architect or ESPurna
 
 A minimal firmware for OTA (over the air) flashing various target firmwares
