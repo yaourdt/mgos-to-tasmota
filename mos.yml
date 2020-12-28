@@ -1,7 +1,7 @@
 author: mark dornbach <mark@dornbach.io>
 description: a minimal firmware for ota flashing tasmota from mongoose os
 platform: esp8266
-version: 0.4.2
+version: 0.4.3
 
 libs_version:        ${mos.version}
 modules_version:     ${mos.version}
@@ -36,7 +36,7 @@ conds:
   - when: build_vars.TARGETFW == "tasmota"
     apply:
       config_schema:
-        - ["mg2x.url", "s", "https://ota.tasmota.com/tasmota/release/tasmota.bin, {"title": "URL of target firmware"}]
+        - ["mg2x.url", "s", "https://ota.tasmota.com/tasmota/release/tasmota.bin", {"title": "URL of target firmware"}]
   - when: build_vars.TARGETFW == "haa"
     apply:
       config_schema:
