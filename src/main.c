@@ -12,7 +12,6 @@ rboot_config *rboot_cfg;
 /*
 	TODO
 	* hash verify download!
-	* add ota rpc
 	* disable wdt and interrupts during critical write operations
 	* move to esp flash write lib:
 	#include "esp_flash_writer.h"

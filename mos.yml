@@ -31,6 +31,7 @@ libs:
   - origin: https://github.com/mongoose-os-libs/rpc-uart                # RPC via serial console
   - origin: https://github.com/mongoose-os-libs/rpc-service-config      # manage device configuration remotely
   - origin: https://github.com/mongoose-os-libs/ca-bundle               # CA certificates
+  - origin: https://github.com/mongoose-os-libs/ota-http-server         # local OTA update via HTTP POST
 
 conds:
   - when: build_vars.TARGETFW == "tasmota"
