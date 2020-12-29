@@ -98,6 +98,9 @@ the initial code.
 This firmware is build using a fork of [Mongoose OS docker action](https://github.com/dea82/mongoose-os-action)
 which can be found [here](https://github.com/yaourdt/mongoose-os-action).
 
+The flash-script is a modified version from [mongoose-os-apps/shelly-homekit](https://github.com/mongoose-os-apps/shelly-homekit),
+originally written by [andyblac](https://github.com/andyblac) and [rojer](https://github.com/rojer).
+
 ## License
 
 Copyright (C) 2020, Mark Dornbach
