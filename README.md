@@ -23,6 +23,12 @@ know how to flash a new firmware over a wired connection.
 but be aware that if something fails, your device may be bricked, if you don't
 know how to flash a new firmware over a wired connection.
 
+> Instead of flashing the device manually (see below), you may try the new automagic [flashing script](tools/flash-shelly.py). The script requires Python 3 to be installed on your computer. After downloading the script, run `python3 flash-shelly.py -a` from the download location. All Shelly devices with stock firmware, which are connected to the same WIFI network, will be found. For each device that is found, you will be asked if you like to convert it.
+>
+> Use `python3 flash-shelly.py -a -t haa` or `python3 flash-shelly.py -a -t espurna` to install alternate targets.
+>
+> ⚠ The script is still in an early testing stage, and I would appreciate your feedback. If you want to give feedback, please open an issue.
+
 Before flashing this firmware, connect your device to a WIFI network with
 internet access. From your browser, open the update URL for your device from the
 table below. Replace `shellyip` with the IP address of your Shelly. The device
