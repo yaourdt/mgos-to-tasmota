@@ -12,9 +12,7 @@ rboot_config *rboot_cfg;
 /*
 	TODO
 	* hash verify download!
-	* if failed wait 60 sec and reboot
 	* disable wdt and interrupts during critical write operations
-	* move block for bootloader (0...4096) and its config (BOOT_CONFIG_ADDR ... BOOT_CONFIG_ADDR) last
 	* move to esp flash write lib:
 	#include "esp_flash_writer.h"
 	static struct esp_flash_write_ctx s_wctx;
@@ -110,6 +108,14 @@ static void http_cb(struct mg_connection *c, int ev, void *ev_data, void *ud) {
 		if ( state->next_blk > state->curr_blk ) {
 			memcpy(&state->data[BLOCK_SIZE - state->left_in_block], hm->body.p, state->left_in_block);
 
+			// check if the next write will overwrite the currently running program
+			if ( (state->next_blk * BLOCK_SIZE) > (*rboot_cfg).roms[(*rboot_cfg).current_rom] ) {
+				LOG(LL_ERROR, ("error! operation would overwrite the currently running program."));
+				c->flags |= MG_F_CLOSE_IMMEDIATELY;
+				state->status = 500;
+				break;
+			}
+
 			if ( spi_flash_erase_sector(state->curr_blk) != 0 ) {
 				LOG(LL_ERROR, ("flash delete error! abort at %d recieved bytes.", state->recieved));
 				c->flags |= MG_F_CLOSE_IMMEDIATELY;
@@ -167,7 +173,59 @@ static void http_cb(struct mg_connection *c, int ev, void *ev_data, void *ud) {
 			}
 			LOG(LL_DEBUG, ("last block dump done"));
 
-			block_copy( (*rboot_cfg).roms[TEMP_STORAGE], 0, state->recieved ); //TODO move me
+			// check if the next operation will overwrite the currently running program
+			if ( ((state->curr_blk + 3) * BLOCK_SIZE) > (*rboot_cfg).roms[(*rboot_cfg).current_rom] ) {
+				LOG(LL_ERROR, ("error! operation would overwrite the currently running program."));
+				break;
+			}
+
+			// we are going to overwrite the bootloader and boot config last
+			// in case something goes wrong. to do so, we first need to save
+			// respective blocks, so they don't get overwritten by the main
+			// copy process
+
+			// save bootloader block
+			block_copy(
+				(*rboot_cfg).roms[TEMP_STORAGE],
+				(state->curr_blk + 1) * BLOCK_SIZE,
+				BLOCK_SIZE
+			);
+
+			// save boot config block
+			block_copy(
+				(*rboot_cfg).roms[TEMP_STORAGE] + BOOT_CONFIG_ADDR,
+				(state->curr_blk + 2) * BLOCK_SIZE,
+				BLOCK_SIZE
+			);
+
+			// move everything between the bootloader and boot config
+			block_copy(
+				(*rboot_cfg).roms[TEMP_STORAGE] + BLOCK_SIZE,
+				BLOCK_SIZE,
+				BOOT_CONFIG_ADDR - BLOCK_SIZE
+			);
+
+			// move everything after boot config
+			block_copy(
+				(*rboot_cfg).roms[TEMP_STORAGE] + BOOT_CONFIG_ADDR + BLOCK_SIZE,
+				BOOT_CONFIG_ADDR + BLOCK_SIZE,
+				state->recieved - BOOT_CONFIG_ADDR - BLOCK_SIZE
+			);
+
+			// overwrite boot config
+			block_copy(
+				(state->curr_blk + 2) * BLOCK_SIZE,
+				BOOT_CONFIG_ADDR,
+				BLOCK_SIZE
+			);
+
+			// overwrite boot loader
+			block_copy(
+				(state->curr_blk + 1) * BLOCK_SIZE,
+				0,
+				BLOCK_SIZE
+			);
+
 			mgos_system_restart_after(200);
 		} else if (state->status == 0) {
 			LOG(LL_INFO, ("Following HTTP redirect..."));

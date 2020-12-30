@@ -23,6 +23,12 @@ know how to flash a new firmware over a wired connection.
 but be aware that if something fails, your device may be bricked, if you don't
 know how to flash a new firmware over a wired connection.
 
+> Instead of flashing the device manually (see below), you may try the new automagic [flashing script](tools/flash-shelly.py). The script requires Python 3 to be installed on your computer. After downloading the script, run `python3 flash-shelly.py -a` from the download location. All Shelly devices with stock firmware, which are connected to the same WIFI network, will be found. For each device that is found, you will be asked if you like to convert it.
+>
+> Use `python3 flash-shelly.py -a -t haa` or `python3 flash-shelly.py -a -t espurna` to install alternate targets.
+>
+> ⚠ The script is still in an early testing stage, and I would appreciate your feedback. If you want to give feedback, please open an issue.
+
 Before flashing this firmware, connect your device to a WIFI network with
 internet access. From your browser, open the update URL for your device from the
 table below. Replace `shellyip` with the IP address of your Shelly. The device
@@ -53,14 +59,14 @@ Shelly 1PM      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmo
 Shelly Plug S   | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyPlugS.zip`   | `{"NAME":"Shelly Plug S","GPIO":[57,255,56,255,0,134,0,0,131,17,132,21,0],"FLAG":2,"BASE":45}`
 Shelly 2        | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly2.zip`       | `{"NAME":"Shelly 2","GPIO":[0,135,0,136,21,22,0,0,9,0,10,137,0],"FLAG":0,"BASE":47}`
 Shelly 2.5      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly25.zip`      | `{"NAME":"Shelly 2.5","GPIO":[56,0,17,0,21,83,0,0,6,82,5,22,156],"FLAG":2,"BASE":18}`
-Shelly RGBW2    | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyRGBW2.zip`   | `{"NAME":"Shelly RGBW2","GPIO":[0,0,52,0,40,255,0,0,37,17,39,38,0],"FLAG":0,"BASE":18}`
+Shelly RGBW2 (color mode) | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyRGBW2.zip`   | `{"NAME":"Shelly RGBW2","GPIO":[0,0,52,0,40,255,0,0,37,17,39,38,0],"FLAG":0,"BASE":18}`
 Shelly Dimmer 1 | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyDimmer1.zip` | `{"NAME":"Shelly Dimmer 1","GPIO":[0,3200,0,3232,5504,5536,0,0,192,0,193,288,0,4736],"FLAG":0,"BASE":18}`
 Shelly Dimmer 2 | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyDimmer2.zip` | `{"NAME":"Shelly Dimmer 2","GPIO":[0,3200,0,3232,5504,5536,0,0,193,0,192,0,320,4736],"FLAG":0,"BASE":18}`
 Shelly EM       | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyEM.zip`      | `{"NAME":"Shelly EM","GPIO":[0,0,0,0,0,0,0,0,6,156,5,21,0],"FLAG":15,"BASE":18}`
 Shelly Bulb     | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyBulb.zip`    | **not yet available, only flash if you a perfectly certain about what you are doing**
 Shelly Vintage  | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyVintage.zip` | **not yet available, only flash if you a perfectly certain about what you are doing**
 Shelly Plug US  | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyPlugUS.zip`  | `{"NAME":"ShellyPlugUS","GPIO":[52,255,57,255,21,134,0,0,131,17,132,157,0],"FLAG":0,"BASE":45}`
-Shelly Duo      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyBulbDuo.zip` | `{"NAME":"Shelly Duo","GPIO":[0,0,0,0,38,37,0,0,0,0,0,0,0],"FLAG":0,"BASE":18}`
+Shelly Duo      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyDuo.zip`     | `{"NAME":"Shelly Duo","GPIO":[0,0,0,0,38,37,0,0,0,0,0,0,0],"FLAG":0,"BASE":18}`
 Shelly H&T      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyHT.zip`      | **not yet available, only flash if you a perfectly certain about what you are doing**
 Shelly i3       | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyI3.zip`      | `{"NAME":"Shelly i3","GPIO":[0,0,0,0,0,0,0,0,83,84,82,0,0],"FLAG":2,"BASE":18}`
 Shelly 1L       | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1L.zip`      | `{"NAME":"Shelly 1L","GPIO":[320,0,0,0,192,224,0,0,0,0,193,0,0,4736],"FLAG":0,"BASE":18}`
@@ -97,6 +103,9 @@ the initial code.
 
 This firmware is build using a fork of [Mongoose OS docker action](https://github.com/dea82/mongoose-os-action)
 which can be found [here](https://github.com/yaourdt/mongoose-os-action).
+
+The flash-script is a modified version from [mongoose-os-apps/shelly-homekit](https://github.com/mongoose-os-apps/shelly-homekit),
+originally written by [andyblac](https://github.com/andyblac) and [rojer](https://github.com/rojer).
 
 ## License
 
