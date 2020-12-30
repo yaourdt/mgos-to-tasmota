@@ -150,7 +150,7 @@ conds:
         FLASH_SIZE: 2097152
         BOOT_CONFIG_ADDR: 0x7000
         MGOS_ROOT_FS_TYPE: SPIFFS
-  - when: build_vars.MODEL == "ShellyBulbDuo"
+  - when: build_vars.MODEL == "ShellyDuo"
     apply:
       name: bulbduo
       build_vars:
