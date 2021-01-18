@@ -141,7 +141,7 @@ static void http_cb(struct mg_connection *c, int ev, void *ev_data, void *ud) {
 		if (hm->resp_code == 302) {
 			// follow http redirect ...
 			for (int i = 0; i < MG_MAX_HTTP_HEADERS; i++) {
-				if ( mg_strstr(hm->header_names[i], mg_mk_str("location") ) != NULL ) {
+				if ( mg_strcasecmp(hm->header_names[i], mg_mk_str("location") ) == 0 ) {
 					LOG(LL_DEBUG, ("302 redirect to %.*s", hm->header_values[i].len, hm->header_values[i].p));
 
 					char *url;
