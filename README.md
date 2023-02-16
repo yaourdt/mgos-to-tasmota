@@ -1,4 +1,4 @@
-![Mongoose Shelly build](https://github.com/yaourdt/mgos-to-tasmota/workflows/Mongoose%20Shelly%20build/badge.svg)
+> ⚠ Unfortunately, due to missing time, I will no longer be able to maintain this repository or the downloads server. If you are interested, I encourage you to fork the project and continue development. Or, if you are willing (and able) to take over this repo, drop me a message.
 
 # Mongoose to Tasmota, Home Accessory Architect or ESPurna
 
