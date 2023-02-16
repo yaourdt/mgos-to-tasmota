@@ -34,6 +34,10 @@ libs:
   - origin: https://github.com/mongoose-os-libs/ota-http-server         # local OTA update via HTTP POST
 
 conds:
+  - when: build_vars.TARGETFW == "url"
+    apply:
+      config_schema:
+        - ["mg2x.url", "s", "<HOST or IP>:8000/ota.bin" , {"title": "URL of target firmware"}]
   - when: build_vars.TARGETFW == "tasmota"
     apply:
       config_schema:
