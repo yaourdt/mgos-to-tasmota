@@ -32,7 +32,7 @@ know how to flash a new firmware over a wired connection.
 Before flashing this firmware, connect your device to a WIFI network with
 internet access. From your browser, open the update URL for your device from the
 table below. Replace `shellyip` with the IP address of your Shelly. The device
-will restart one or two times and attempt to download the traget firmware. If
+will restart one or two times and attempt to download the target firmware. If
 this download succeeds, the device will restart again, and you will see a new
 WIFI network labeled _tasmota-????_, _HAA-????_, or _ESPURNA-????_.
 This process should take no longer than 4 - 5 minutes, depending on your network
