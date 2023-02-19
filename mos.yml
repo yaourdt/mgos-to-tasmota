@@ -182,6 +182,14 @@ conds:
         FLASH_SIZE: 4194304
         BOOT_CONFIG_ADDR: 0x7000
         MGOS_ROOT_FS_TYPE: SPIFFS
+  - when: build_vars.MODEL == "ShellyPlugEU"
+    apply:
+      name: shelly-plugEU
+      build_vars:
+        FS_SIZE: 262144
+        FLASH_SIZE: 4194304
+        BOOT_CONFIG_ADDR: 0x7000
+        MGOS_ROOT_FS_TYPE: SPIFFS
   - when: build_vars.MODEL == "ShellyUni"
     apply:
       name: uni
