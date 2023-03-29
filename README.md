@@ -72,7 +72,7 @@ Shelly i3       | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmo
 Shelly 1L       | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1L.zip`      | `{"NAME":"Shelly 1L","GPIO":[320,0,0,0,192,224,0,0,0,0,193,0,0,4736],"FLAG":0,"BASE":18}`
 Shelly Plug 2   | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyPlug2.zip`   | **not yet available, only flash if you a perfectly certain about what you are doing**
 Shelly Uni      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyUni.zip`     | `{"NAME":"Shelly Uni","GPIO":[320,0,0,0,225,0,0,0,192,193,0,224,0,4864],"FLAG":0,"BASE":18}`
-Shelly Duo RGBW | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyDuoRGBW.zip` | **not yet available, only flash if you a perfectly certain about what you are doing**
+Shelly Duo RGBW | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyDuoRGBW.zip` | `{"NAME":"Shelly Duo RGBW","GPIO":[1,1,1,1,0,419,1,1,417,416,418,1,1,1],"FLAG":0,"BASE":18}`
 
 For your convenience, the table above also lists the matching Tasmota device
 templates from [templates.blakadder.com](https://templates.blakadder.com) which
