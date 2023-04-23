@@ -54,25 +54,25 @@ which you can use for recovery.
 
 Device | Update URL | Tasmota Template
 --- | --- | ---
-Shelly 1        | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1.zip`       | `{"NAME":"Shelly 1","GPIO":[0,0,0,0,21,82,0,0,0,0,0,0,0],"FLAG":0,"BASE":46}`
-Shelly 1PM      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1PM.zip`     | `{"NAME":"Shelly 1PM","GPIO":[56,0,0,0,82,134,0,0,0,0,0,21,0],"FLAG":2,"BASE":18}`
-Shelly Plug S   | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyPlugS.zip`   | `{"NAME":"Shelly Plug S","GPIO":[56,255,158,255,255,134,0,0,131,17,132,21,255],"FLAG":2,"BASE":45}`
-Shelly 2        | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly2.zip`       | `{"NAME":"Shelly 2","GPIO":[0,135,0,136,21,22,0,0,9,0,10,137,0],"FLAG":0,"BASE":47}`
-Shelly 2.5      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly25.zip`      | `{"NAME":"Shelly 2.5","GPIO":[56,0,17,0,21,83,0,0,6,82,5,22,156],"FLAG":2,"BASE":18}`
-Shelly RGBW2 (color mode, latest firmware needed) | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyRGBW2.zip`   | `{"NAME":"Shelly RGBW2","GPIO":[0,0,52,0,40,255,0,0,37,17,39,38,0],"FLAG":0,"BASE":18}`
-Shelly Dimmer 1 | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyDimmer1.zip` | `{"NAME":"Shelly Dimmer 1","GPIO":[0,3200,0,3232,5568,5600,0,0,192,0,193,288,0,4736],"FLAG":0,"BASE":18}`
-Shelly Dimmer 2 | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyDimmer2.zip` | `{"NAME":"Shelly Dimmer 2","GPIO":[0,3200,0,3232,5568,5600,0,0,193,0,192,0,320,4736],"FLAG":0,"BASE":18}`
-Shelly EM       | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyEM.zip`      | `{"NAME":"Shelly EM","GPIO":[0,0,0,0,0,0,0,0,6,156,5,21,0],"FLAG":15,"BASE":18}`
+[Shelly 1](https://templates.blakadder.com/shelly_1.html)        | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1.zip`       | `{"NAME":"Shelly 1","GPIO":[0,0,0,0,21,82,0,0,0,0,0,0,0],"FLAG":0,"BASE":46}`
+[Shelly 1PM](https://templates.blakadder.com/shelly_1PM.html)      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1PM.zip`     | `{"NAME":"Shelly 1PM","GPIO":[56,0,0,0,82,134,0,0,0,0,0,21,0],"FLAG":2,"BASE":18}`
+[Shelly Plug S](https://templates.blakadder.com/shelly_plug_S.html)   | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyPlugS.zip`   | `{"NAME":"Shelly Plug S","GPIO":[56,255,158,255,255,134,0,0,131,17,132,21,255],"FLAG":2,"BASE":45}`
+[Shelly 2](https://templates.blakadder.com/shelly_2.html)        | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly2.zip`       | `{"NAME":"Shelly 2","GPIO":[0,135,0,136,21,22,0,0,9,0,10,137,0],"FLAG":0,"BASE":47}`
+[Shelly 2.5](https://templates.blakadder.com/shelly_25.html)      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly25.zip`      | `{"NAME":"Shelly 2.5","GPIO":[56,0,17,0,21,83,0,0,6,82,5,22,156],"FLAG":2,"BASE":18}`
+[Shelly RGBW2](https://templates.blakadder.com/shelly_RGBW2.html) (color mode, latest firmware needed) | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyRGBW2.zip`   | `{"NAME":"Shelly RGBW2","GPIO":[0,0,52,0,40,255,0,0,37,17,39,38,0],"FLAG":0,"BASE":18}`
+[Shelly Dimmer 1](https://templates.blakadder.com/shelly_Dimmer.html) | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyDimmer1.zip` | `{"NAME":"Shelly Dimmer 1","GPIO":[0,3200,0,3232,5568,5600,0,0,192,0,193,288,0,4736],"FLAG":0,"BASE":18}` [Requires firmware](https://github.com/jamesturton/shelly-dimmer-stm32/releases)
+[Shelly Dimmer 2](https://templates.blakadder.com/shelly_Dimmer_2.html) | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyDimmer2.zip` | `{"NAME":"Shelly Dimmer 2","GPIO":[0,3200,0,3232,5568,5600,0,0,193,0,192,0,320,4736],"FLAG":0,"BASE":18}` [Requires firmware](https://github.com/jamesturton/shelly-dimmer-stm32/releases)
+[Shelly EM](https://templates.blakadder.com/shelly_EM.html)       | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyEM.zip`      | `{"NAME":"Shelly EM","GPIO":[0,0,0,0,0,0,0,0,6,156,5,21,0],"FLAG":15,"BASE":18}`
 Shelly Bulb     | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyBulb.zip`    | **not yet available, only flash if you a perfectly certain about what you are doing**
-Shelly Vintage  | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyVintage.zip` | **not yet available, only flash if you a perfectly certain about what you are doing**
-Shelly Plug US  | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyPlugUS.zip`  | `{"NAME":"Shelly Plug US","GPIO":[52,0,57,0,21,134,0,0,131,17,132,157,0],"FLAG":0,"BASE":45}`
-Shelly Duo      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyDuo.zip`     | `{"NAME":"Shelly Duo","GPIO":[0,0,0,0,38,37,0,0,0,0,0,0,0],"FLAG":0,"BASE":18}`
-Shelly H&T      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyHT.zip`      | **not yet available, only flash if you a perfectly certain about what you are doing**
-Shelly i3       | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyI3.zip`      | `{"NAME":"Shelly i3","GPIO":[0,0,0,0,0,0,0,0,83,84,82,0,0],"FLAG":2,"BASE":18}`
-Shelly 1L       | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1L.zip`      | `{"NAME":"Shelly 1L","GPIO":[320,0,0,0,192,224,0,0,0,0,193,0,0,4736],"FLAG":0,"BASE":18}`
+[Shelly Vintage](https://templates.blakadder.com/shelly_vintage_G125_G40.html)  | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyVintage.zip` | **not yet available, only flash if you a perfectly certain about what you are doing**
+[Shelly Plug US](https://templates.blakadder.com/shelly_plug_US.html)  | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyPlugUS.zip`  | `{"NAME":"Shelly Plug US","GPIO":[52,0,57,0,21,134,0,0,131,17,132,157,0],"FLAG":0,"BASE":45}`
+[Shelly Duo](https://templates.blakadder.com/shelly_DUO.html)      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyDuo.zip`     | `{"NAME":"Shelly Duo","GPIO":[0,0,0,0,38,37,0,0,0,0,0,0,0],"FLAG":0,"BASE":18}`
+[Shelly H&T](https://templates.blakadder.com/unsupported/shelly_HT.html)      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyHT.zip`      | **not yet available, only flash if you a perfectly certain about what you are doing**
+[Shelly i3](https://templates.blakadder.com/shelly_i3.html)       | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyI3.zip`      | `{"NAME":"Shelly i3","GPIO":[0,0,0,0,0,0,0,0,83,84,82,0,0],"FLAG":2,"BASE":18}`
+[Shelly 1L](https://templates.blakadder.com/shelly_1L.html)       | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-Shelly1L.zip`      | `{"NAME":"Shelly 1L","GPIO":[320,0,0,0,192,224,0,0,0,0,193,0,0,4736],"FLAG":0,"BASE":18}`
 Shelly Plug 2   | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyPlug2.zip`   | **not yet available, only flash if you a perfectly certain about what you are doing**
-Shelly Uni      | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyUni.zip`     | `{"NAME":"Shelly Uni","GPIO":[320,0,0,0,225,0,0,0,192,193,0,224,0,4864],"FLAG":0,"BASE":18}`
-Shelly Duo RGBW | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyDuoRGBW.zip` | **not yet available, only flash if you a perfectly certain about what you are doing**
+[Shelly Uni](https://templates.blakadder.com/shelly_UNI.html)     | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyUni.zip`     | `{"NAME":"Shelly Uni","GPIO":[320,0,0,0,225,0,0,0,192,193,0,224,0,4864],"FLAG":0,"BASE":18}`
+[Shelly Duo RGBW](https://templates.blakadder.com/shelly_DUO_RGBW.html) | `http://shellyip/ota?url=http://dl.dasker.eu/firmware/mg2tasmota-ShellyDuoRGBW.zip` | **not yet available, only flash if you a perfectly certain about what you are doing**
 
 For your convenience, the table above also lists the matching Tasmota device
 templates from [templates.blakadder.com](https://templates.blakadder.com) which
